@@ -2,6 +2,7 @@
 #include <iomanip>
 #include <ctime>
 #include <cmath>
+#include <algorithm>
 
 using namespace std;
 
@@ -19,8 +20,12 @@ void Task3();
 void Task4();
 void Task5();
 void Task6();
+int linealSearch(double* mass, int n, double searchh);
 void Task7();
+void SelectionSortDouble(double* mass, int n);
+void SelectionSortInt(int* mass, int n);
 void Task8();
+double* deleteFromDiap(double* mass, int n, int a, int b);
 void Task9();
 void Task10();
 double SumElEvDouble(double* mass, int n);
@@ -53,6 +58,19 @@ int main()
         break;
     case 5:
         Task5();
+        break;
+    case 6:
+        Task6();
+        break;
+    case 7:
+        Task7();
+        break;
+    case 8:
+        Task8();
+        break;
+
+    case 10:
+        Task10();
         break;
 
     default:
@@ -187,3 +205,115 @@ void chislo_mensheC_0(int* mass, int n, int C){
         if (mass[i] < C) mass[i] = 0;
     }
 }
+
+void Task6(){
+    int n = N();
+    double* mass = newArrDouble(n);
+    ShowArrDouble(mass,n);
+
+    double searchh;
+    cout<<"Введите число, индекс которого вы хотите узнать: ";cin>>searchh;
+    int a = linealSearch(mass, n, searchh);
+    if (a == -1) cout<<"Такого элемента нет в массиве";
+    else cout<<"Элемент на ходится под "<<a<<" индексом";
+
+    delete[] mass;
+}
+
+int linealSearch(double* mass, int n, double searchh){
+    int i = 0;
+    int countt = -1;
+    while(i < n){
+        if (searchh == mass[i]) {countt = i; break;}
+        i++;
+    }
+    return countt;
+}
+
+void Task7(){
+    int n = N();
+    double* mass = newArrDouble(n);
+    ShowArrDouble(mass,n);
+    SelectionSortDouble(mass, n);
+    ShowArrDouble(mass,n);
+
+    delete[] mass;
+}
+
+void SelectionSortDouble(double* mass, int n){
+    for (int i = 0; i < n-1; i++){
+        int min_index = i;
+        for (int j = i + 1; j < n; j++)
+            if (mass[j] < mass[min_index])
+                min_index = j;
+        if (min_index != i)
+        {
+            double temp = mass[i];
+            mass[i] = mass[min_index];
+            mass[min_index] = temp;
+        }
+    }
+}
+
+void Task8(){
+    int n = N();
+    double* mass = newArrDouble(n);
+    ShowArrDouble(mass,n);
+    int a,b;
+
+    cout<<"Введите целочисленный диапазон через пробел: ";cin>>a>>b;
+    int minn = min(a,b);
+    int maxx = max(a,b);
+    mass = deleteFromDiap(mass, n, minn, maxx);
+    ShowArrDouble(mass,n);
+
+    delete[] mass;
+}
+
+double* deleteFromDiap(double* mass, int n, int a, int b){
+    int nol = 0;
+    for (int i = 0; i<n;i++){
+        if (mass[i] > a && mass[i]<b)
+        {
+            mass[i] = 0;
+            nol ++;
+        }
+    }
+
+    double* massNew = new double[n-nol];
+    int k = 0;
+    for (int i = 0;i<n;i++){
+        if (mass[i] != 0){
+            massNew[k] = mass[i];
+            k++;
+        }
+    }
+
+    return massNew;
+}
+
+void Task10(){
+    int n = N();
+    int* mass = newArrInt(n);
+    ShowArrInt(mass,n);
+    SelectionSortInt(mass, n);
+    ShowArrInt(mass,n);
+
+}
+
+void SelectionSortInt(int* mass, int n){
+    for (int i = 0; i < n-1; i++){
+        int min_index = i;
+        for (int j = i + 1; j < n; j++)
+            if (mass[j] < mass[min_index])
+                min_index = j;
+        if (min_index != i)
+        {
+            double temp = mass[i];
+            mass[i] = mass[min_index];
+            mass[min_index] = temp;
+        }
+    }
+}
+
+
